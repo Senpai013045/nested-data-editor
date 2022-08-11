@@ -12,7 +12,7 @@ const RenderFields_Internal: React.FC<RenderFieldProps> = ({
   fields,
   parents,
 }) => {
-  const { triggerEdit } = useFields();
+  const { triggerEdit, handleDelete } = useFields();
   return (
     <div>
       {fields.map((field, index) => {
@@ -30,7 +30,7 @@ const RenderFields_Internal: React.FC<RenderFieldProps> = ({
               </p>
               <code>{newParents.join(" , ")}</code>
               <button onClick={() => triggerEdit(newParents)}>Edit</button>
-              <button>Delete</button>
+              <button onClick={() => handleDelete(newParents)}>Delete</button>
             </div>
             {field.subFields ? (
               <div className={styles.subfields}>

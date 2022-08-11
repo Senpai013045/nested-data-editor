@@ -32,6 +32,8 @@ const FieldsContext = React.createContext({
   triggerEdit: (_indexes: number[]) => {},
   handleCloseModal: () => {},
   handleSubmit: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handleDelete: (_indexes: number[]) => {},
 });
 
 export const FieldsProvider = ({
@@ -72,6 +74,24 @@ export const FieldsProvider = ({
     handleCloseModal();
   };
 
+  const handleDelete = (indexes: number[]) => {
+    if (indexes.length === 1) {
+      setModifiedFields((p) => {
+        const clonedFields = deepClone(p);
+        clonedFields.splice(indexes[0], 1);
+        return clonedFields;
+      });
+      return;
+    }
+    const clonedFields = deepClone(modifiedFields);
+    const field = getField(clonedFields, indexes);
+    if (field.subFields) {
+      field.subFields.splice(indexes[indexes.length - 1], 1);
+    } else {
+      clonedFields.splice(indexes[0], 1);
+    }
+  };
+
   return (
     <FieldsContext.Provider
       value={{
@@ -83,6 +103,7 @@ export const FieldsProvider = ({
         handleCloseModal,
         handleSubmit,
         triggerEdit,
+        handleDelete,
       }}
     >
       {Boolean(activeIndexes) && (
