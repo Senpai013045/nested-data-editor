@@ -84,12 +84,12 @@ export const FieldsProvider = ({
       return;
     }
     const clonedFields = deepClone(modifiedFields);
-    const field = getField(clonedFields, indexes);
-    if (field.subFields) {
-      field.subFields.splice(indexes[indexes.length - 1], 1);
-    } else {
-      clonedFields.splice(indexes[0], 1);
+    const lastIndex = indexes[indexes.length - 1];
+    const parentField = getField(clonedFields, indexes.slice(0, -1));
+    if (parentField.subFields) {
+      parentField.subFields.splice(lastIndex, 1);
     }
+    setModifiedFields(clonedFields);
   };
 
   return (
